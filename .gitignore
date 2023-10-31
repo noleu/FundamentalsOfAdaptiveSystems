@@ -12,3 +12,5 @@ SUMOS.egg-info/*
 */target/*
 spark/project/*
 *.iml
+.venv
+CrowdNav.egg-info

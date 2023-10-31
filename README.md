@@ -10,7 +10,9 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
 
 ### Minimal Setup
 * Download the CrowdNav code
-* Run `python setup.py install` to download all dependencies 
+* Run `python -m venv .venv` to create a virtual environment
+* Run `source .venv/bin/activate` to activate the virtual environment
+* Run `pip install .` to download all dependencies 
 * Install [SUMO](http://sumo.dlr.de) & set env var SUMO_HOME
    1. Download SUMO from http://prdownloads.sourceforge.net/sumo/sumo-src-0.32.0.zip?download
    2. Extract and note the full path to the directory
