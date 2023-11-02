@@ -151,8 +151,8 @@ class Car:
         """ adds this car to the simulation through the traci API """
         self.currentRouteBeginTick = tick
         try:
-            traci.vehicle.add(self.id, self.__createNewRoute(tick), tick, -4, -3)
-            traci.vehicle.subscribe(self.id, (tc.VAR_ROAD_ID,))
+            traci.vehicle.addLegacy(self.id, self.__createNewRoute(tick), tick)
+            traci.vehicle.subscribe(self.id, [tc.VAR_ROAD_ID])
             # ! currently disabled for performance reasons
             # traci.vehicle.setAccel(self.id, self.acceleration)
             # traci.vehicle.setDecel(self.id, self.deceleration)
