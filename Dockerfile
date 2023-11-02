@@ -8,7 +8,6 @@ RUN apt-get update &&              \
   sumo sumo-tools sumo-doc
 
 ENV SUMO_HOME /usr/bin/sumo
-ENV SUMO_VERSION 0_32_0
 
 # First cache dependencies
 ADD ./setup.py /app/setup.py
