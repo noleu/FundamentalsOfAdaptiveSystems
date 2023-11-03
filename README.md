@@ -10,15 +10,9 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
 
 ### Minimal Setup
 * Download the CrowdNav code
-* Run `python -m venv .venv` to create a virtual environment
-* Run `source .venv/bin/activate` to activate the virtual environment
-* Run `pip install .` to download all dependencies 
-* Install [SUMO](http://sumo.dlr.de) & set env var SUMO_HOME
-   1. Download SUMO from http://prdownloads.sourceforge.net/sumo/sumo-src-0.32.0.zip?download
-   2. Extract and note the full path to the directory
-   3. Set SUMO_HOME to point to this directory
-* Install [Kafka](https://kafka.apache.org/) (we recommend [this](https://hub.docker.com/r/spotify/kafka/) Docker image) and set kafkaHost in Config.py
-* Run `python run.py`
+* Run `docker run --name kafka --hostname kafka -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=kafka --env ADVERTISED_PORT=9092 spotify/kafka`  to run a kafka instance
+* Run `docker build -t crowdnav .` to build the docker image
+* Run `docker run -d -it --link kafka:kafka crowdnav` to run the docker container
 
 ### Getting Started Guide
 A first guide on how to use (i.e. adapt, measure, optimize) CrowdNav with the [RTX tool](https://github.com/Starofall/RTX) is available at this [Wiki page](https://github.com/Starofall/RTX/wiki/RTX-&-CrowdNav-Getting-Started-Guide). 
