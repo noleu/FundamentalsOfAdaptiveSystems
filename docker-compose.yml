@@ -11,3 +11,15 @@ services:
     build: .
     depends_on:
       - kafka
+    networks:
+      - foas-net
+    volumes:
+      - csvexchangevolume:/app/data/
+
+networks:
+  foas-net:
+    driver: bridge
+
+volumes:
+  csvexchangevolume:
+    
