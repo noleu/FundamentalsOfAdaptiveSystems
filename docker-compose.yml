@@ -30,6 +30,7 @@ services:
       - foas-net
     volumes:
       - csvexchangevolume:/code/app/data
+      - .:/code
     ports:
       - "8080:80"
 
