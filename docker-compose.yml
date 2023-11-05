@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  kafka:
+    image: spotify/kafka
+    environment:
+      - ADVERTISED_HOST=kafka
+      - ADVERTISED_PORT=9092
+
+  crowdnav:
+    container_name: crowdnav
+    build: .
+    depends_on:
+      - kafka

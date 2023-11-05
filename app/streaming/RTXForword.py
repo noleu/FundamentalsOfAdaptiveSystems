@@ -14,6 +14,7 @@ def connect():
         try:
             global producer
             producer = KafkaProducer(bootstrap_servers=Config.kafkaHost,
+                                     api_version=(0, 10, 1),
                                      value_serializer=lambda v: json.dumps(v).encode('utf-8'),
                                      request_timeout_ms=5000)
             print(Fore.GREEN + '# StreamForword OK!' + Fore.RESET)
