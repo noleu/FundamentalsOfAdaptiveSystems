@@ -5,6 +5,8 @@ services:
     environment:
       - ADVERTISED_HOST=kafka
       - ADVERTISED_PORT=9092
+    networks:
+      - foas-net
 
   crowdnav:
     container_name: crowdnav
