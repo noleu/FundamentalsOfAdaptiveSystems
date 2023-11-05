@@ -15,4 +15,5 @@ RUN pip install ./app
 # Add sources
 ADD ./ /app/
 WORKDIR /app
-CMD ["python","/app/forever.py"]
+# CMD ["python","/app/forever.py"]
+ENTRYPOINT ["python","/app/forever.py"]
