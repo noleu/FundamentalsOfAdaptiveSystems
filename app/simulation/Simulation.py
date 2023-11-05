@@ -16,6 +16,9 @@ import time
 # get the current system time
 from app.routing.RoutingEdge import RoutingEdge
 
+from app.entitiy import KafkaMonitor
+from app.logging import CSVLogger
+
 current_milli_time = lambda: int(round(time.time() * 1000))
 
 
@@ -58,6 +61,7 @@ class Simulation(object):
 
         # start listening to all cars that arrived at their target
         traci.simulation.subscribe((tc.VAR_ARRIVED_VEHICLES_IDS,))
+
         while 1:
             # Do one simulation step
             cls.tick += 1
@@ -136,6 +140,31 @@ class Simulation(object):
                     CarRegistry.totalTripAverage) + "(" + str(
                     CarRegistry.totalTrips) + ")" + " # avgTripOverhead: " + str(
                     CarRegistry.totalTripOverheadAverage))
+                
+                monitorTrip = {
+                    "step": cls.tick,
+                    "drivingCarCounter": traci.vehicle.getIDCount(),
+                    "totalTripAverage": CarRegistry.totalTripAverage,
+                    "totalTrips": CarRegistry.totalTrips,
+                    "totalTripOverheadAverage": CarRegistry.totalTripOverheadAverage
+                    }
+                monitorConfigs = {
+                    "explorationPercentage":CustomRouter.explorationPercentage,
+                    "routeRandomSigma": CustomRouter.routeRandomSigma,
+                    "maxSpeedAndLengthFactor": CustomRouter.maxSpeedAndLengthFactor,
+                    "averageEdgeDurationFactor": CustomRouter.averageEdgeDurationFactor,
+                    "freshnessUpdateFactor": CustomRouter.freshnessUpdateFactor,
+                    "freshnessCutOffValue": CustomRouter.freshnessCutOffValue,
+                    "reRouteEveryTicks": CustomRouter.reRouteEveryTicks,
+                    "totalCarCounter": CarRegistry.totalCarCounter,
+                    "edgeAverageInfluence": RoutingEdge.edgeAverageInfluence
+                }
+                simulationDetails = {
+                    "carStats": monitorTrip,
+                    "configs": monitorConfigs
+                } 
+                KafkaMonitor.publish(simulationDetails)
+
 
                 # @depricated -> will be removed
                 # # if we are in paralllel mode we end the simulation after 10000 ticks with a result output

@@ -1,6 +1,7 @@
 import os, sys
 
 from app.streaming import RTXConnector
+from app.entitiy import KafkaMonitor
 
 sys.path.append(os.path.join(os.environ.get("SUMO_HOME"), "tools"))
 
@@ -15,6 +16,7 @@ import Config
 import traci, sys, os
 import thread
 import time
+import threading
 
 
 # uuid4()
@@ -36,6 +38,7 @@ def start(processID, parallelMode,useGUI):
     if Config.kafkaUpdates or Config.mqttUpdates:
         RTXForword.connect()
         RTXConnector.connect()
+        KafkaMonitor.connect()
 
     # Check if sumo is installed and available
     SUMODependency.checkDeps()
@@ -51,6 +54,8 @@ def start(processID, parallelMode,useGUI):
     # Start sumo in the background
     SUMOConnector.start()
     info("\n# SUMO-Application started OK!", Fore.GREEN)
+    thread = threading.Thread(target=KafkaMonitor.monitor)
+    thread.start()
     # Start the simulation
     Simulation.start()
     # Simulation ended, so we shutdown
