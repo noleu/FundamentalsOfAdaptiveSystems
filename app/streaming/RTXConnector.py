@@ -22,6 +22,7 @@ def connect():
         try:
             global consumer
             consumer = KafkaConsumer(bootstrap_servers=Config.kafkaHost,
+                                     api_version=(0, 10, 1),
                                      value_deserializer=lambda m: json.loads(m.decode('utf-8')),
                                      group_id=None,
                                      consumer_timeout_ms=100)

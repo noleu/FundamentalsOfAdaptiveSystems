@@ -32,3 +32,6 @@ A first guide on how to use (i.e. adapt, measure, optimize) CrowdNav with the [R
 ### Notes
 
 * To let the system stabalize, no message is sent to kafka or CSV in the first 1000 ticks .
+
+* Errors of the form "Error: Answered with error to command 0xc4: Route replacement failed for car-356" are internal sumo errors that are not of our consern as of now. See this thread for details
+https://github.com/eclipse-sumo/sumo/issues/6996 

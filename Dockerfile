@@ -5,7 +5,7 @@ RUN apt-get update &&              \
   build-essential              \
   git                          \
   libxerces-c-dev      \
-  sumo sumo-tools sumo-doc
+  sumo sumo-tools sumo-doc telnet
 
 ENV SUMO_HOME /usr/bin/sumo
 
