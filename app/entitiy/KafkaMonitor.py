@@ -20,6 +20,7 @@ def initializeConsumer():
     global consumer
     consumer = KafkaConsumer(
         bootstrap_servers=Config.kafkaHost,
+        api_version=(0, 10, 1),
         value_deserializer=lambda v: json.loads(v.decode('utf-8')),
         request_timeout_ms=5000,
         group_id=None,
@@ -35,6 +36,7 @@ def initializeProducer():
     global producer
     producer = KafkaProducer(
         bootstrap_servers=Config.kafkaHost,
+        api_version=(0, 10, 1),
         value_serializer=lambda v: json.dumps(v).encode('utf-8'),
         request_timeout_ms=5000)
     
