@@ -10,7 +10,9 @@ services:
 
   crowdnav:
     container_name: crowdnav
-    build: .
+    build:
+      context: crowdnav
+      dockerfile: Dockerfile
     depends_on:
       - kafka
     networks:
