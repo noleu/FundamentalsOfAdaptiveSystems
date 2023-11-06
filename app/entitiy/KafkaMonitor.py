@@ -12,7 +12,7 @@ producer = None
 def connect():
     """Try to connect to Kafka, else exits the process."""
     if Config.kafkaUpdates:
-       initializeConsumer()
+       #initializeConsumer()
        initializeProducer()  
 
 def initializeConsumer():

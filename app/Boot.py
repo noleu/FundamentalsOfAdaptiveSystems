@@ -53,8 +53,8 @@ def start(processID, parallelMode,useGUI):
     # Start sumo in the background
     SUMOConnector.start()
     info("\n# SUMO-Application started OK!", Fore.GREEN)
-    thread = threading.Thread(target=KafkaMonitor.monitor)
-    thread.start()
+    # thread = threading.Thread(target=KafkaMonitor.monitor)
+    # thread.start()
     # Start the simulation
     Simulation.start()
     # Simulation ended, so we shutdown
