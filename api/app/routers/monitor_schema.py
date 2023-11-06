@@ -13,7 +13,7 @@ router = APIRouter(
 def monitor_schema():
     data = None
 
-    with open("/code/specifications/monitor_schema.json") as json_file:
+    with open("/code/specifications/monitoring_schema.json") as json_file:
         data = json.load(json_file)
         print(data)
 
