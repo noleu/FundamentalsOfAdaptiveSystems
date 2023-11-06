@@ -34,6 +34,14 @@
             "description": "check for a new route very x times after the car starts"
         }
       }
+    },
+    "totalCarCounter": {
+      "type": "number",
+      "description": "the total number of cars in the simulation"
+    },
+    "edgeAverageInfluence": {
+      "type": "number",
+      "description": "how much the average edge duration influences the routing"
     }
   }
 }
