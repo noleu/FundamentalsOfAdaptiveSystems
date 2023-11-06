@@ -11,7 +11,7 @@ services:
   crowdnav:
     container_name: crowdnav
     build:
-      context: crowdnav
+      context: ./crowdnav
       dockerfile: Dockerfile
     depends_on:
       - kafka
@@ -22,7 +22,7 @@ services:
 
   http-server:
     build:
-      context: api
+      context: ./api
       dockerfile: Dockerfile
     depends_on:
       - kafka
