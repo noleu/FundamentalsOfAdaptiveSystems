@@ -10,7 +10,9 @@ services:
 
   crowdnav:
     container_name: crowdnav
-    build: .
+    build:
+      context: ./crowdnav
+      dockerfile: Dockerfile
     depends_on:
       - kafka
     networks:
@@ -20,7 +22,7 @@ services:
 
   http-server:
     build:
-      context: api
+      context: ./api
       dockerfile: Dockerfile
     depends_on:
       - kafka
@@ -28,6 +30,7 @@ services:
       - foas-net
     volumes:
       - csvexchangevolume:/code/app/data
+#      - ./api:/code
     ports:
       - "8080:80"
 

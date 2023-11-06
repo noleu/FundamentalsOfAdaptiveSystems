@@ -9,11 +9,12 @@ from app.logging import info
 from app.routing.CustomRouter import CustomRouter
 from app.network.Network import Network
 from app.simulation.Simulation import Simulation
-from app.streaming import RTXForword
+from streaming import RTXForword
 from colorama import Fore
-from app.sumo import SUMOConnector, SUMODependency
-from app import Config
+from sumo import SUMOConnector, SUMODependency
+import Config
 import traci, sys, os
+
 
 # uuid4()
 def start(processID, parallelMode,useGUI):

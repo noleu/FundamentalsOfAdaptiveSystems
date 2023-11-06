@@ -1,0 +1,71 @@
+{
+  "type": "object",
+  "properties": {
+    "configs": {
+      "type": "object",
+      "properties": {
+        "reRouteEveryTicks": {
+          "type": "integer",
+          "description": "Check for a new route every x times after the car starts"
+        },
+        "maxSpeedAndLengthFactor": {
+          "type": "number",
+          "description": "How much the length/speed influences the routing"
+        },
+        "freshnessCutOffValue": {
+          "type": "number",
+          "description": "If data is older than this, it is not considered in the algorithm"
+        },
+        "freshnessUpdateFactor": {
+          "type": "number",
+          "description": "How much the freshnessUpdateFactor influences the routing"
+        },
+        "totalCarCounter": {
+          "type": "integer",
+          "description": "The total amount of cars that should be in the system"
+        },
+        "edgeAverageInfluence": {
+          "type": "integer",
+          "description": "Edge average influence"
+        },
+        "explorationPercentage": {
+          "type": "number",
+          "description": "The percentage of routes we want to use for exploration"
+        },
+        "routeRandomSigma": {
+          "type": "number",
+          "description": "The randomization sigma of edge weights"
+        },
+        "averageEdgeDurationFactor": {
+          "type": "number",
+          "description": "How much the averageEdgeDurationFactor influences the routing"
+        }
+      }
+    },
+    "carStats": {
+      "type": "object",
+      "properties": {
+        "totalTrips": {
+          "type": "integer",
+          "description": "Total number of trips"
+        },
+        "totalTripOverheadAverage": {
+          "type": "number",
+          "description": "Average overhead of total trips"
+        },
+        "step": {
+          "type": "integer",
+          "description": "Current step"
+        },
+        "totalTripAverage": {
+          "type": "number",
+          "description": "Average duration of total trips"
+        },
+        "drivingCarCounter": {
+          "type": "integer",
+          "description": "Counter for driving cars"
+        }
+      }
+    }
+  }
+}

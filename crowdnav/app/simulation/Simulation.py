@@ -16,7 +16,7 @@ import time
 # get the current system time
 from app.routing.RoutingEdge import RoutingEdge
 
-from app.entitiy import KafkaMonitor
+from app.entitiy import KafkaProducerMonitor
 from app.logging import CSVLogger
 
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -147,7 +147,7 @@ class Simulation(object):
                     "totalTripAverage": CarRegistry.totalTripAverage,
                     "totalTrips": CarRegistry.totalTrips,
                     "totalTripOverheadAverage": CarRegistry.totalTripOverheadAverage
-                    }
+                }
                 monitorConfigs = {
                     "explorationPercentage":CustomRouter.explorationPercentage,
                     "routeRandomSigma": CustomRouter.routeRandomSigma,
@@ -163,8 +163,7 @@ class Simulation(object):
                     "carStats": monitorTrip,
                     "configs": monitorConfigs
                 } 
-                KafkaMonitor.publish(simulationDetails)
-
+                KafkaProducerMonitor.publish(simulationDetails)
 
                 # @depricated -> will be removed
                 # # if we are in paralllel mode we end the simulation after 10000 ticks with a result output

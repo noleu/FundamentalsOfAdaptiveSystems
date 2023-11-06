@@ -1,5 +1,3 @@
-from logging import error
-
 from kafka import KafkaConsumer
 import json
 
@@ -7,7 +5,6 @@ data_store = {"latest_message": None}
 consumer = None
 
 def connect():
-  print("here")
   try:
     global consumer
     consumer = KafkaConsumer(
@@ -19,7 +16,7 @@ def connect():
         auto_offset_reset='earliest')
     
     consumer.subscribe(["crowd-nav-monitored-stats"])
-    print('# KafkaMonitorC Connected!')
+    print('# KafkaConsumerMonitor Connected!')
 
     for message in consumer:
       data_store["latest_message"] = message.value   
