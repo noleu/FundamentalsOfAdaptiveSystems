@@ -20,5 +20,5 @@ def connect():
       except Exception as e:
         print(Fore.RED + "Connection to Kafka failed! Error:", e, Fore.RESET)  
 
-def publish(msg):
-   producer.send(Config.kafkaTopicMonitoring, msg)
+def publish(topic, message):
+  producer.send(topic, message)
