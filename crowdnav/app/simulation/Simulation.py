@@ -167,7 +167,7 @@ class Simulation(object):
                 "carStats": monitorTrip,
                 "configs": monitorConfigs
             } 
-            # KafkaProducerMonitor.publish(Config.kafkaTopicMonitoring, simulationDetails)
+            KafkaProducerMonitor.publish(Config.kafkaTopicMonitoring, simulationDetails)
 
                 # @depricated -> will be removed
                 # # if we are in paralllel mode we end the simulation after 10000 ticks with a result output
