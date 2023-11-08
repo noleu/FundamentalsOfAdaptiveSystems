@@ -3,11 +3,11 @@ import traci
 import traci.constants as tc
 from app.network.Network import Network
 
-from app.streaming import RTXForword
+from crowdnav.app.streaming import RTXForward
 from colorama import Fore
 
 from app import Config
-from app.entitiy.CarRegistry import CarRegistry
+from app.entity.CarRegistry import CarRegistry
 from app.logging import info
 from app.routing.CustomRouter import CustomRouter
 from app.streaming import RTXConnector
@@ -16,7 +16,7 @@ import time
 # get the current system time
 from app.routing.RoutingEdge import RoutingEdge
 
-from app.entitiy import KafkaProducerMonitor
+from app.entity import KafkaProducerMonitor
 from app.logging import CSVLogger
 
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -72,7 +72,7 @@ class Simulation(object):
             cls.lastTick = current_milli_time()
             msg = dict()
             msg["duration"] = duration
-            RTXForword.publish(msg, Config.kafkaTopicPerformance)
+            RTXForward.publish(msg, Config.kafkaTopicPerformance)
 
             # Check for removed cars and re-add them into the system
             for removedCarId in traci.simulation.getSubscriptionResults()[122]:
@@ -85,7 +85,7 @@ class Simulation(object):
             routingDuration = current_milli_time() - timeBeforeCarProcess
             msg = dict()
             msg["duration"] = routingDuration
-            RTXForword.publish(msg, Config.kafkaTopicRouting)
+            RTXForward.publish(msg, Config.kafkaTopicRouting)
 
             # if we enable this we get debug information in the sumo-gui using global traveltime
             # should not be used for normal running, just for debugging

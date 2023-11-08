@@ -1,7 +1,7 @@
 import os, sys
 
 from app.streaming import RTXConnector
-from app.entitiy import KafkaProducerMonitor
+from app.entity import KafkaProducerMonitor
 
 sys.path.append(os.path.join(os.environ.get("SUMO_HOME"), "tools"))
 
@@ -9,7 +9,7 @@ from app.logging import info
 from app.routing.CustomRouter import CustomRouter
 from app.network.Network import Network
 from app.simulation.Simulation import Simulation
-from app.streaming import RTXForword
+from crowdnav.app.streaming import RTXForward
 from colorama import Fore
 from app.sumo import SUMOConnector, SUMODependency
 import app.Config as Config
@@ -32,7 +32,7 @@ def start(processID, parallelMode,useGUI):
     info('# Kafka-Topic2 -> ' + Config.kafkaTopicPerformance, Fore.YELLOW)
     # init sending updates to kafka and getting commands from there
     if Config.kafkaUpdates or Config.mqttUpdates:
-        RTXForword.connect()
+        RTXForward.connect()
         RTXConnector.connect()
         KafkaProducerMonitor.connect()
 
