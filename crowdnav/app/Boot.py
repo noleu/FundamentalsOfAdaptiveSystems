@@ -9,7 +9,7 @@ from app.logging import info
 from app.routing.CustomRouter import CustomRouter
 from app.network.Network import Network
 from app.simulation.Simulation import Simulation
-from crowdnav.app.streaming import RTXForward
+from app.streaming import RTXForward
 from colorama import Fore
 from app.sumo import SUMOConnector, SUMODependency
 import app.Config as Config

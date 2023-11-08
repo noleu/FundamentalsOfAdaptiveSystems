@@ -8,7 +8,7 @@ from app.logging import CSVLogger
 from app.network.Network import Network
 from app.routing.CustomRouter import CustomRouter
 from app.routing.RouterResult import RouterResult
-from crowdnav.app.streaming import RTXForward
+from app.streaming import RTXForward
 
 
 class Car:

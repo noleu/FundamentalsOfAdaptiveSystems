@@ -3,7 +3,7 @@ import traci
 import traci.constants as tc
 from app.network.Network import Network
 
-from crowdnav.app.streaming import RTXForward
+from app.streaming import RTXForward
 from colorama import Fore
 
 from app import Config
