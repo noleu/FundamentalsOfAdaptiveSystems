@@ -85,10 +85,19 @@ class Car:
             msg = dict()
             msg["tick"] = tick
             msg["overhead"] = tripOverhead
+            msg["complaint"] = self.generate_complaint(tripOverhead)
             RTXForword.publish(msg, Config.kafkaTopicTrips)
+            
         # if car is still enabled, restart it in the simulation
         if self.disabled is False:
             self.addToSimulation(tick)
+            
+    def generate_complaint(self, overhead):
+        import random
+        if overhead > 2.5 and random.random() > 0.5:
+            return 1
+        else:
+            return 0
 
     def __createNewRoute(self, tick):
         """ creates a new route to a random target and uploads this route to SUMO """
@@ -158,11 +167,12 @@ class Car:
             # traci.vehicle.setDecel(self.id, self.deceleration)
             # traci.vehicle.setImperfection(self.id, self.imperfection)
             if self.smartCar:
+                None
                 # set color to red
-                if self.currentRouterResult.isVictim:
-                    traci.vehicle.setColor(self.id, (0, 255, 0, 0))
-                else:
-                    traci.vehicle.setColor(self.id, (255, 0, 0, 0))
+                # if self.currentRouterResult.isVictim:
+                #     traci.vehicle.setColor(self.id, (0, 255, 0, 0))
+                # else:
+                #     traci.vehicle.setColor(self.id, (255, 0, 0, 0))
             else:
                 # dump car is using SUMO default routing, so we reroute using the same target
                 # putting the next line left == ALL SUMO ROUTING

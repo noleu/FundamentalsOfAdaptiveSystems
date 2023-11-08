@@ -1,5 +1,5 @@
 from kafka import KafkaProducer
-from app import Config
+import app.Config as Config
 from colorama import Fore
 import json
 
@@ -21,4 +21,11 @@ def connect():
         print(Fore.RED + "Connection to Kafka failed! Error:", e, Fore.RESET)  
 
 def publish(topic, message):
-  producer.send(topic, message)
+  if Config.kafkaUpdates:
+    try:
+        producer.send(topic, message)
+    except:
+        print("Error sending kafka status")
+  else:
+    # we ignore this in json mode
+    pass
