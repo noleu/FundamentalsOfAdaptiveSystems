@@ -1,6 +1,7 @@
 import os, sys
 
 from app.streaming import RTXConnector
+from app.entitiy import KafkaProducerMonitor
 
 sys.path.append(os.path.join(os.environ.get("SUMO_HOME"), "tools"))
 
@@ -13,8 +14,6 @@ from colorama import Fore
 from sumo import SUMOConnector, SUMODependency
 import Config
 import traci, sys, os
-import thread
-import time
 
 
 # uuid4()
@@ -35,6 +34,7 @@ def start(processID, parallelMode,useGUI):
     if Config.kafkaUpdates or Config.mqttUpdates:
         RTXForword.connect()
         RTXConnector.connect()
+        KafkaProducerMonitor.connect()
 
     # Check if sumo is installed and available
     SUMODependency.checkDeps()
