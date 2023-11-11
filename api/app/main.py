@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from .routers import example, execute_schema, monitor_schema, monitor
-from .routers.src import KafkaConsumerMonitor
+from .connectors import KafkaConsumerMonitor
 from threading import Thread
 import asyncio
 
