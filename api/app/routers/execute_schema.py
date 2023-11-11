@@ -10,10 +10,10 @@ router = APIRouter(
 
 
 @router.get("/")
-def example_endpoint():
+def execute_schema_endpoint():
     data = None
 
-    with open("/code/specifications/execution_schema.json") as json_file:
+    with open("/code/specifications/execute_schema.json") as json_file:
         data = json.load(json_file)
         print(data)
 
