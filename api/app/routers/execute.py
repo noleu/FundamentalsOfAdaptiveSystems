@@ -1,9 +1,8 @@
 from kafka.errors import KafkaTimeoutError
 
-import RequestTypes as rt
 from fastapi import APIRouter
-from api.app.connectors.KafkaProducerExecute import KafkaProducerEx
-from RequestTypes import Adaption_options
+from ..connectors.KafkaProducerExecute import KafkaProducerEx
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -24,3 +23,18 @@ def example_endpoint(options: Adaption_options):
 
     return {"status": status, "message": message}
 
+
+class AdaptionOptions(BaseModel):
+    Knobs: Knobs
+    totalCarCounter: int
+    edgeAverageInfluence: float
+
+
+class Knobs(BaseModel):
+    routeRandomSigma: float
+    explorationPercentage: float
+    maxSpeedAndLengthFactor: int
+    averageEdgeDurationFactor: int
+    freshnessUpdateFactor: int
+    freshnessCutOffValue: int
+    reRouteEveryTicks: int
