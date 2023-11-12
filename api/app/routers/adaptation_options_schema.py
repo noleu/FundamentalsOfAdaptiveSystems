@@ -3,7 +3,7 @@ import json
 
 
 router = APIRouter(
-    prefix="/adaption_options_schema",
+    prefix="/adaptation_options_schema",
     tags=["adaption_options_schema"],
     responses={404: {"description": "Not found"}},
 )
