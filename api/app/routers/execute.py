@@ -25,7 +25,7 @@ class Knobs(BaseModel):
     reRouteEveryTicks: int
 
 
-class AdaptionOptions(BaseModel):
+class AdaptationOptions(BaseModel):
     # Knobs: Knobs
     route_random_sigma: float | None = None
     exploration_percentage: float | None = None
@@ -45,7 +45,7 @@ kafkaproducer = AIOKafkaProducer(loop=loop, bootstrap_servers=KAFKA_INSTANCE, ap
 
 
 @router.put("/")
-async def execute(options: AdaptionOptions):
+async def execute(options: AdaptationOptions):
 
     message = ""
     status = "error"

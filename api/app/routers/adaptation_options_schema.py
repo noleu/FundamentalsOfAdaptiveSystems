@@ -3,17 +3,17 @@ import json
 
 
 router = APIRouter(
-    prefix="/adaption_options_schema",
-    tags=["adaption_options_schema"],
+    prefix="/adaptation_options_schema",
+    tags=["adaptation_options_schema"],
     responses={404: {"description": "Not found"}},
 )
 
 
 @router.get("/")
-def adaption_options_schema_endpoint():
+def adaptation_options_schema_endpoint():
     data = None
 
-    with open("/code/specifications/adaption_options_schema.json") as json_file:
+    with open("/code/specifications/adaptation_options_schema.json") as json_file:
         data = json.load(json_file)
         print(data)
 
