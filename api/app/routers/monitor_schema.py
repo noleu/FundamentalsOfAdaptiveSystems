@@ -10,7 +10,7 @@ router = APIRouter(
 
 
 @router.get("/")
-def monitor_schema():
+def monitor_schema_endpoint():
     data = None
 
     with open("/code/specifications/monitoring_schema.json") as json_file:

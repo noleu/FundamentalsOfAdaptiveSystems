@@ -79,13 +79,17 @@ class Car:
             CarRegistry.totalTripOverheadAverage = addToAverage(CarRegistry.totalTrips,
                                                                 CarRegistry.totalTripOverheadAverage,
                                                                 tripOverhead)
+            
+            complaint = self.generate_complaint(tripOverhead)
+            CarRegistry.totalComplaints += complaint
+
             CSVLogger.logEvent("overhead", [tick, self.sourceID, self.targetID, durationForTrip,
-                                            minimalCosts, tripOverhead, self.id, self.currentRouterResult.isVictim])
+                                            minimalCosts, tripOverhead, self.id, self.currentRouterResult.isVictim, complaint])
             # log to kafka
             msg = dict()
             msg["tick"] = tick
             msg["overhead"] = tripOverhead
-            msg["complaint"] = self.generate_complaint(tripOverhead)
+            msg["complaint"] = complaint
             RTXForward.publish(msg, Config.kafkaTopicTrips)
             
         # if car is still enabled, restart it in the simulation
