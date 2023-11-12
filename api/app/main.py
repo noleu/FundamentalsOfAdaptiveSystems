@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from .routers import adaptation_options, adaptation_options_schema, execute_schema, monitor_schema, monitor, execute
 from .connectors import KafkaConsumerMonitor
-from threading import Thread
 import asyncio
-from aiokafka import AIOKafkaProducer
 app = FastAPI()
 
 app.include_router(monitor.router)
@@ -19,6 +17,10 @@ async def root():
 
 @app.on_event("startup")
 async def startup_event():
+    # wait for Kafka to be ready
     await asyncio.sleep(35)
-    consumerThread = Thread(target=KafkaConsumerMonitor.connect)
-    consumerThread.start()
+    asyncio.create_task(KafkaConsumerMonitor.connect())
+
+
+
+
