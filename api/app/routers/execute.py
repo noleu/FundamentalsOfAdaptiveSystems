@@ -51,8 +51,8 @@ async def execute(options: AdaptionOptions):
     status = "error"
     await kafkaproducer.start()
     try:
-        future = await kafkaproducer.send("crowd-nav-commands", json.dumps(options.dict()).encode("ascii"))
-        response = await future
+        future = await kafkaproducer.send_and_wait("crowd-nav-commands", json.dumps(options.dict()).encode("ascii"))
+        # response = await future
         status = "success"
         message = "The message was successfully sent to the kafka broker, the message is: " + str(options)
     except KafkaTimeoutError:
