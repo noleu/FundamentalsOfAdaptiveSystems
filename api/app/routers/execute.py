@@ -27,15 +27,15 @@ class Knobs(BaseModel):
 
 class AdaptionOptions(BaseModel):
     # Knobs: Knobs
-    routeRandomSigma: float | None = None
-    explorationPercentage: float | None = None
-    maxSpeedAndLengthFactor: int | None = None
-    averageEdgeDurationFactor: int | None = None
-    freshnessUpdateFactor: int | None = None
-    freshnessCutOffValue: int | None = None
-    reRouteEveryTicks: int | None = None
-    totalCarCounter: int | None = None
-    edgeAverageInfluence: float | None = None
+    route_random_sigma: float | None = None
+    exploration_percentage: float | None = None
+    max_speed_and_length_factor: int | None = None
+    average_edge_duration_factor: int | None = None
+    freshness_update_factor: int | None = None
+    freshness_cut_off_value: int | None = None
+    re_route_every_ticks: int | None = None
+    total_car_counter: int | None = None
+    edge_average_influence: float | None = None
 
 
 loop = asyncio.get_event_loop()
