@@ -3,7 +3,7 @@ from .routers import example, execute_schema, monitor_schema, monitor, adaption_
 from .connectors import KafkaConsumerMonitor
 from threading import Thread
 import asyncio
-
+from aiokafka import AIOKafkaProducer
 app = FastAPI()
 
 app.include_router(example.router, prefix="/example")
@@ -19,8 +19,13 @@ app.include_router(adaption_options_schema.router)
 async def root():
     return {"message": "Hello Bigger Applications!----"}
 
+
 @app.on_event("startup")
 async def startup_event():
     await asyncio.sleep(35)
-    thread = Thread(target=KafkaConsumerMonitor.connect)
-    thread.start()
+    consumerThread = Thread(target=KafkaConsumerMonitor.connect)
+    consumerThread.start()
+
+
+
+
