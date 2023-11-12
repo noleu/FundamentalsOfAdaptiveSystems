@@ -1,4 +1,6 @@
 import json
+import logging
+
 import traci
 import traci.constants as tc
 from app.network.Network import Network
@@ -97,11 +99,16 @@ class Simulation(object):
 
             # real time update of config if we are not in kafka mode
             if (cls.tick % 10) == 0:
+                print("checking for new config")
                 if Config.kafkaUpdates is False and Config.mqttUpdates is False:
                     # json mode
+                    logging.info("checking for new config from json")
+                    print("checking for new config from json")
                     cls.applyFileConfig()
                 else:
                     # kafka mode
+                    logging.info("checking for new config from kafka")
+                    print("checking for new config from kafka")
                     newConf = RTXConnector.checkForNewConfiguration()
                     if newConf is not None:
                         if "exploration_percentage" in newConf:
