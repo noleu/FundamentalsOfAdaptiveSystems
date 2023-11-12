@@ -8,11 +8,17 @@ CrowdNav is a simulation based on SUMO and TraCI that implements a custom router
 that can be configured using kafka messages or local JSON config on the fly while the simulation is running.
 Also runtime data is send to a kafka queue to allow stream processing and logger locally to CSV.
 
-### Minimal Setup
+## Dependencies
+* Docker
+* Docker Compose
+
+### Setup
 * Download the CrowdNav code
-* Run `docker run --name kafka --hostname kafka -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=kafka --env ADVERTISED_PORT=9092 spotify/kafka`  to run a kafka instance
-* Run `docker build -t crowdnav .` to build the docker image
-* Run `docker run -d -it --link kafka:kafka crowdnav` to run the docker container
+* Run `docker compose up -d`  to run all the images (CrowdNav, Kafka, API) in detached mode
+
+## Folder structure
+* **api**: This contains the HTTP Server which is implemented using FastAPI
+* **crowdnav**: This contains CrowdNav
 
 ### Getting Started Guide
 A first guide on how to use (i.e. adapt, measure, optimize) CrowdNav with the [RTX tool](https://github.com/Starofall/RTX) is available at this [Wiki page](https://github.com/Starofall/RTX/wiki/RTX-&-CrowdNav-Getting-Started-Guide). 
@@ -31,7 +37,7 @@ A first guide on how to use (i.e. adapt, measure, optimize) CrowdNav with the [R
 
 ### Notes
 
-* To let the system stabalize, no message is sent to kafka or CSV in the first 1000 ticks .
+* To let the system stabilize, no message is sent to kafka or CSV in the first 1000 ticks .
 
-* Errors of the form "Error: Answered with error to command 0xc4: Route replacement failed for car-356" are internal sumo errors that are not of our consern as of now. See this thread for details
+* Errors of the form "Error: Answered with error to command 0xc4: Route replacement failed for car-356" are internal sumo errors that are not of our concern as of now. See this thread for details
 https://github.com/eclipse-sumo/sumo/issues/6996 

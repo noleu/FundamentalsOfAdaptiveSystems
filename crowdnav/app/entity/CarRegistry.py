@@ -1,6 +1,6 @@
 from app import Config
 
-from app.entitiy.Car import Car
+from app.entity.Car import Car
 
 
 class NullCar:
@@ -20,7 +20,7 @@ class CarRegistry(object):
     # always increasing counter for carIDs
     carIndexCounter = 0
     # list of all cars
-    cars = {}  # type: dict[str,app.entitiy.Car]
+    cars = {}  # type: dict[str,app.entity.Car]
     # counts the number of finished trips
     totalTrips = 0
     # average of all trip durations
@@ -48,7 +48,7 @@ class CarRegistry(object):
     def findById(cls, carID):
         """ returns a car by a given carID """
         try:
-            return CarRegistry.cars[carID]  # type: app.entitiy.Car
+            return CarRegistry.cars[carID]  # type: app.entity.Car
         except:
             return NullCar()
 

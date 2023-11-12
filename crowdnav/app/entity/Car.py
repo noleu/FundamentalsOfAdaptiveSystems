@@ -8,7 +8,7 @@ from app.logging import CSVLogger
 from app.network.Network import Network
 from app.routing.CustomRouter import CustomRouter
 from app.routing.RouterResult import RouterResult
-from app.streaming import RTXForword
+from app.streaming import RTXForward
 
 
 class Car:
@@ -50,7 +50,7 @@ class Car:
         """ car arrived at its target, so we add some statistic data """
 
         # import here because python can not handle circular-dependencies
-        from app.entitiy.CarRegistry import CarRegistry
+        from app.entity.CarRegistry import CarRegistry
         # add a round to the car
         self.rounds += 1
         self.lastRerouteCounter = 0
@@ -85,10 +85,19 @@ class Car:
             msg = dict()
             msg["tick"] = tick
             msg["overhead"] = tripOverhead
-            RTXForword.publish(msg, Config.kafkaTopicTrips)
+            msg["complaint"] = self.generate_complaint(tripOverhead)
+            RTXForward.publish(msg, Config.kafkaTopicTrips)
+            
         # if car is still enabled, restart it in the simulation
         if self.disabled is False:
             self.addToSimulation(tick)
+            
+    def generate_complaint(self, overhead):
+        import random
+        if overhead > 2.5 and random.random() > 0.5:
+            return 1
+        else:
+            return 0
 
     def __createNewRoute(self, tick):
         """ creates a new route to a random target and uploads this route to SUMO """
@@ -158,11 +167,12 @@ class Car:
             # traci.vehicle.setDecel(self.id, self.deceleration)
             # traci.vehicle.setImperfection(self.id, self.imperfection)
             if self.smartCar:
+                None
                 # set color to red
-                if self.currentRouterResult.isVictim:
-                    traci.vehicle.setColor(self.id, (0, 255, 0, 0))
-                else:
-                    traci.vehicle.setColor(self.id, (255, 0, 0, 0))
+                # if self.currentRouterResult.isVictim:
+                #     traci.vehicle.setColor(self.id, (0, 255, 0, 0))
+                # else:
+                #     traci.vehicle.setColor(self.id, (255, 0, 0, 0))
             else:
                 # dump car is using SUMO default routing, so we reroute using the same target
                 # putting the next line left == ALL SUMO ROUTING
