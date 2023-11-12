@@ -8,7 +8,7 @@ from app.logging import CSVLogger
 from app.network.Network import Network
 from app.routing.CustomRouter import CustomRouter
 from app.routing.RouterResult import RouterResult
-from app.streaming import RTXForword
+from app.streaming import RTXForward
 
 
 class Car:
@@ -50,7 +50,7 @@ class Car:
         """ car arrived at its target, so we add some statistic data """
 
         # import here because python can not handle circular-dependencies
-        from app.entitiy.CarRegistry import CarRegistry
+        from app.entity.CarRegistry import CarRegistry
         # add a round to the car
         self.rounds += 1
         self.lastRerouteCounter = 0
@@ -79,16 +79,29 @@ class Car:
             CarRegistry.totalTripOverheadAverage = addToAverage(CarRegistry.totalTrips,
                                                                 CarRegistry.totalTripOverheadAverage,
                                                                 tripOverhead)
+            
+            complaint = self.generate_complaint(tripOverhead)
+            CarRegistry.totalComplaints += complaint
+
             CSVLogger.logEvent("overhead", [tick, self.sourceID, self.targetID, durationForTrip,
-                                            minimalCosts, tripOverhead, self.id, self.currentRouterResult.isVictim])
+                                            minimalCosts, tripOverhead, self.id, self.currentRouterResult.isVictim, complaint])
             # log to kafka
             msg = dict()
             msg["tick"] = tick
             msg["overhead"] = tripOverhead
-            RTXForword.publish(msg, Config.kafkaTopicTrips)
+            msg["complaint"] = complaint
+            RTXForward.publish(msg, Config.kafkaTopicTrips)
+            
         # if car is still enabled, restart it in the simulation
         if self.disabled is False:
             self.addToSimulation(tick)
+            
+    def generate_complaint(self, overhead):
+        import random
+        if overhead > 2.5 and random.random() > 0.5:
+            return 1
+        else:
+            return 0
 
     def __createNewRoute(self, tick):
         """ creates a new route to a random target and uploads this route to SUMO """
@@ -151,18 +164,19 @@ class Car:
         """ adds this car to the simulation through the traci API """
         self.currentRouteBeginTick = tick
         try:
-            traci.vehicle.addLegacy(self.id, self.__createNewRoute(tick), tick)
+            traci.vehicle.add(self.id, self.__createNewRoute(tick))
             traci.vehicle.subscribe(self.id, [tc.VAR_ROAD_ID])
             # ! currently disabled for performance reasons
             # traci.vehicle.setAccel(self.id, self.acceleration)
             # traci.vehicle.setDecel(self.id, self.deceleration)
             # traci.vehicle.setImperfection(self.id, self.imperfection)
             if self.smartCar:
+                None
                 # set color to red
-                if self.currentRouterResult.isVictim:
-                    traci.vehicle.setColor(self.id, (0, 255, 0, 0))
-                else:
-                    traci.vehicle.setColor(self.id, (255, 0, 0, 0))
+                # if self.currentRouterResult.isVictim:
+                #     traci.vehicle.setColor(self.id, (0, 255, 0, 0))
+                # else:
+                #     traci.vehicle.setColor(self.id, (255, 0, 0, 0))
             else:
                 # dump car is using SUMO default routing, so we reroute using the same target
                 # putting the next line left == ALL SUMO ROUTING

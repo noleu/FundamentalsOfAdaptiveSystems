@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  kafka:
+    image: spotify/kafka
+    environment:
+      - ADVERTISED_HOST=kafka
+      - ADVERTISED_PORT=9092
+    networks:
+      - foas-net
+
+  crowdnav:
+    container_name: crowdnav
+    build:
+      context: ./crowdnav
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+    networks:
+      - foas-net
+    volumes:
+      - csvexchangevolume:/app/data/
+
+  http-server:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+    networks:
+      - foas-net
+    volumes:
+      - csvexchangevolume:/code/app/data
+    #      - ./api:/code
+    ports:
+      - '8080:80'
+
+networks:
+  foas-net:
+    driver: bridge
+
+volumes:
+  csvexchangevolume:

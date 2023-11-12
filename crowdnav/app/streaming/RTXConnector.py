@@ -6,7 +6,7 @@ from app import Config
 import msgpack, sys
 from colorama import Fore
 import json
-
+import logging
 # Starting the producer
 consumer = None
 mqttClient = None
@@ -22,6 +22,7 @@ def connect():
         try:
             global consumer
             consumer = KafkaConsumer(bootstrap_servers=Config.kafkaHost,
+                                     api_version=(0, 10, 1),
                                      value_deserializer=lambda m: json.loads(m.decode('utf-8')),
                                      group_id=None,
                                      consumer_timeout_ms=100)
@@ -55,8 +56,18 @@ def checkForNewConfiguration():
     if Config.kafkaUpdates:
         try:
             # @todo get last value
-            return next(consumer).value
-        except:
+            # print("config update check" + next(consumer).value) # fails
+            latest_config = None
+            print("consumer " + str(consumer is None))
+            for msg in consumer:
+                print("msg " + str(msg))
+                latest_config = msg.value
+            # not sure if correct type, prob needs to be dict
+            print("latest_config " + str(latest_config) + str(type(latest_config)))
+            return latest_config
+        except Exception as e:
+            print("c " + str(consumer is None))
+            print("exception " + str(e))
             return None
     else:
         return None

@@ -1,13 +1,15 @@
 import json
+import logging
+
 import traci
 import traci.constants as tc
 from app.network.Network import Network
 
-from app.streaming import RTXForword
+from app.streaming import RTXForward
 from colorama import Fore
 
 from app import Config
-from app.entitiy.CarRegistry import CarRegistry
+from app.entity.CarRegistry import CarRegistry
 from app.logging import info
 from app.routing.CustomRouter import CustomRouter
 from app.streaming import RTXConnector
@@ -15,6 +17,9 @@ import time
 
 # get the current system time
 from app.routing.RoutingEdge import RoutingEdge
+
+from app.entity import KafkaProducerMonitor
+from app.logging import CSVLogger
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
@@ -58,6 +63,7 @@ class Simulation(object):
 
         # start listening to all cars that arrived at their target
         traci.simulation.subscribe((tc.VAR_ARRIVED_VEHICLES_IDS,))
+
         while 1:
             # Do one simulation step
             cls.tick += 1
@@ -68,7 +74,7 @@ class Simulation(object):
             cls.lastTick = current_milli_time()
             msg = dict()
             msg["duration"] = duration
-            RTXForword.publish(msg, Config.kafkaTopicPerformance)
+            RTXForward.publish(msg, Config.kafkaTopicPerformance)
 
             # Check for removed cars and re-add them into the system
             for removedCarId in traci.simulation.getSubscriptionResults()[122]:
@@ -78,9 +84,10 @@ class Simulation(object):
             # let the cars process this step
             CarRegistry.processTick(cls.tick)
             # log time it takes for routing
+            routingDuration = current_milli_time() - timeBeforeCarProcess
             msg = dict()
-            msg["duration"] = current_milli_time() - timeBeforeCarProcess
-            RTXForword.publish(msg, Config.kafkaTopicRouting)
+            msg["duration"] = routingDuration
+            RTXForward.publish(msg, Config.kafkaTopicRouting)
 
             # if we enable this we get debug information in the sumo-gui using global traveltime
             # should not be used for normal running, just for debugging
@@ -92,11 +99,16 @@ class Simulation(object):
 
             # real time update of config if we are not in kafka mode
             if (cls.tick % 10) == 0:
+                print("checking for new config")
                 if Config.kafkaUpdates is False and Config.mqttUpdates is False:
                     # json mode
+                    logging.info("checking for new config from json")
+                    print("checking for new config from json")
                     cls.applyFileConfig()
                 else:
                     # kafka mode
+                    logging.info("checking for new config from kafka")
+                    print("checking for new config from kafka")
                     newConf = RTXConnector.checkForNewConfiguration()
                     if newConf is not None:
                         if "exploration_percentage" in newConf:
@@ -128,6 +140,8 @@ class Simulation(object):
                             RoutingEdge.edgeAverageInfluence = newConf["edge_average_influence"]
                             print("setting edgeAverageInfluence: " + str(newConf["edge_average_influence"]))
 
+                        
+
             # print status update if we are not running in parallel mode
             if (cls.tick % 100) == 0 and Config.parallelMode is False:
                 print(str(Config.processID) + " -> Step:" + str(cls.tick) + " # Driving cars: " + str(
@@ -135,8 +149,12 @@ class Simulation(object):
                     CarRegistry.totalCarCounter) + " # avgTripDuration: " + str(
                     CarRegistry.totalTripAverage) + "(" + str(
                     CarRegistry.totalTrips) + ")" + " # avgTripOverhead: " + str(
-                    CarRegistry.totalTripOverheadAverage))
-
+                    CarRegistry.totalTripOverheadAverage) + " # totalComplaints: " + str(
+                    CarRegistry.totalComplaints))
+                
+            cls.sendMonitorInfo(duration, routingDuration)
+                
+            # publish to kafkaTopicMonitoring after every tick/simulation step
                 # @depricated -> will be removed
                 # # if we are in paralllel mode we end the simulation after 10000 ticks with a result output
                 # if (cls.tick % 10000) == 0 and Config.parallelMode:
@@ -148,3 +166,35 @@ class Simulation(object):
                 #         CarRegistry.totalTrips) + ")" + " # avgTripOverhead: " + str(
                 #         CarRegistry.totalTripOverheadAverage))
                 #     return
+
+    # publish to kafkaTopicMonitoring after every tick/simulation step   
+    @classmethod   
+    def sendMonitorInfo(cls, duration, routingDuration):              
+        monitorTrip = {
+            "step": cls.tick,
+            "tick_duration": duration,
+            "routing_duration": routingDuration,
+            "driving_car_counter": traci.vehicle.getIDCount(),
+            "total_trip_average": CarRegistry.totalTripAverage,
+            "total_trips": CarRegistry.totalTrips,
+            "total_trip_overhead_average": CarRegistry.totalTripOverheadAverage,
+            "total_complaints": CarRegistry.totalComplaints
+        }
+        monitorConfigs = {
+            "exploration_percentage": CustomRouter.explorationPercentage,
+            "route_random_sigma": CustomRouter.routeRandomSigma,
+            "max_speed_and_length_factor": CustomRouter.maxSpeedAndLengthFactor,
+            "average_edge_duration_factor": CustomRouter.averageEdgeDurationFactor,
+            "freshness_update_factor": CustomRouter.freshnessUpdateFactor,
+            "freshness_cut_off_value": CustomRouter.freshnessCutOffValue,
+            "re_route_every_ticks": CustomRouter.reRouteEveryTicks,
+            "total_car_counter": CarRegistry.totalCarCounter,
+            "edge_average_influence": RoutingEdge.edgeAverageInfluence
+        }
+        simulationDetails = {
+            "car_stats": monitorTrip,
+            "configs": monitorConfigs
+        } 
+        KafkaProducerMonitor.publish(Config.kafkaTopicMonitoring, simulationDetails)
+
+    

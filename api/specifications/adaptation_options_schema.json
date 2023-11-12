@@ -1,0 +1,115 @@
+{
+  "type": "object",
+  "properties": {
+    "route_random_sigma": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "exploration_percentage": {
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "max_speed_and_length_factor": {
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "average_edge_duration_factor": {
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "freshness_update_factor": {
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "freshness_cut_off_value": {
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "re_route_every_ticks": {
+      "properties": {
+        "start": {
+          "type": "integer"
+        },
+        "stop": {
+          "type": "integer"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "total_car_counter": {
+      "properties": {
+        "start": {
+          "type": "integer"
+        },
+        "stop": {
+          "type": "integer"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    },
+    "edge_average_influence": {
+      "properties": {
+        "start": {
+          "type": "number"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "domain": {
+          "type": "string"
+        }}
+    }
+  }
+}
+
