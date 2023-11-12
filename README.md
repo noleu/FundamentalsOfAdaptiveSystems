@@ -1,9 +1,9 @@
 # CrowdNav
 
-![Banner](https://raw.githubusercontent.com/Starofall/CrowdNav/master/banner.PNG)
+![Banner](./banner.PNG)
 
 
-### Description
+## Description
 CrowdNav is a simulation based on SUMO and TraCI that implements a custom router
 that can be configured using kafka messages or local JSON config on the fly while the simulation is running.
 Also runtime data is send to a kafka queue to allow stream processing and logger locally to CSV.
@@ -12,28 +12,27 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
 * Docker
 * Docker Compose
 
-### Setup
+## Setup
 * Download the CrowdNav code
 * Run `docker compose up -d`  to run all the images (CrowdNav, Kafka, API) in detached mode
 
 ## Folder structure
 * **api**: This contains the HTTP Server which is implemented using FastAPI
+  * The API is documented at http://localhost:8080/docs or http://localhost:8080/redoc
 * **crowdnav**: This contains CrowdNav
 
-### Getting Started Guide
-A first guide on how to use (i.e. adapt, measure, optimize) CrowdNav with the [RTX tool](https://github.com/Starofall/RTX) is available at this [Wiki page](https://github.com/Starofall/RTX/wiki/RTX-&-CrowdNav-Getting-Started-Guide). 
+### Available endpoints
+![OpenAPI](./endpoints.png)
 
-### Operational Modes
+  * /monitor (GET): Returns a JSON object with a list of values of everything monitorable about the exemplar. For example, this could include the response time of requests for an exemplar of a web server.
+  * /execute (PUT): Executes an adaptation of the exemplar. A JSON object is included in the body of this HTTP request, specifying the adaptation you’d like to enact.
+  * /adaptation_options (GET): Returns a JSON object with the adaptation options/adaptation space, these are the configurable aspects of the exemplar/system
+  * /monitor_schema (GET): Returns the JSON schema of the JSON object returned by the “monitor” endpoint. 
+  * /execute_schema (GET): Returns the JSON schema of the JSON object returned by the “execute” endpoint.
+  * /adaptation_options_schema (GET): Returns the JSON schema of the JSON object returned by the “adaptation_options” endpoint.
 
-* Normal mode (`python run.py`) with UI to Debug the application. Runs forever.
-* Parallel mode (`python parallel.py n`) to let n processes of SUMO spawn for faster data generation.
-  Stops after 10k ticks and reports values.
-  
-### Further customization
-
-* Runtime variables are in the knobs.json file and will only be used if `kafkaUpdates = True
-` is set to false in `Config.py`. Else the tool uses Kafka for value changes.
-* To disable the UI in normal mode, change the `sumoUseGUI = True` value in `Config.py` to false.
+### Testing endpoints
+All the endpoints can be tested using an HTTP client like Postman. For all the GET requests just go to the URL specified in the API docs (e.g. http://localhost:8080/adaptation_options).For the /execute you first have to get a JSON object using a GET request to /adaptation_options and use this object in the body of the PUT request.
 
 ### Notes
 
