@@ -4,13 +4,13 @@ import json
 
 router = APIRouter(
     prefix="/adaptation_options",
-    tags=["adaption_options"],
+    tags=["adaptation_options"],
     responses={404: {"description": "Not found"}},
 )
 
 
 @router.get("/")
-def adaption_options_endpoint():
+def adaptation_options_endpoint():
 
     return {"options": {"route_random_sigma":           {"start": 0.0,"stop": 1.0,"domain": "continuous"} , 
                         "exploration_percentage":       {"start": 0.0,"stop": 1.0,"domain": "continuous"}, 
