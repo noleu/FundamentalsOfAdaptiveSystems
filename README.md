@@ -32,7 +32,7 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
   * /adaptation_options_schema (GET): Returns the JSON schema of the JSON object returned by the “adaptation_options” endpoint.
 
 ### Testing endpoints
-All the endpoints can be tested using an HTTP client like Postman. For all the GET requests just go to the URL specified in the API docs (e.g. http://localhost:8080/adaptation_options).For the /execute you first have to get a JSON object using a GET request to /adaptation_options and use this object in the body of the PUT request.
+All the endpoints can be tested using an HTTP client like Postman. For all the GET requests just go to the URL specified in the API docs (e.g. http://localhost:8080/adaptation_options). For the /execute you first have to get a JSON object using a GET request to /adaptation_options and use this object in the body of the PUT request.
 
 ### Notes
 
