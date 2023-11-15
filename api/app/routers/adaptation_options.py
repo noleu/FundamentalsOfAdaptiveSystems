@@ -12,7 +12,8 @@ router = APIRouter(
 @router.get("/")
 def adaptation_options_endpoint():
 
-    return {"options": {"route_random_sigma":           {"start": 0.0,"stop": 1.0,"domain": "continuous"} , 
+    return {
+        "route_random_sigma":           {"start": 0.0,"stop": 1.0,"domain": "continuous"} , 
                         "exploration_percentage":       {"start": 0.0,"stop": 1.0,"domain": "continuous"}, 
                         "max_speed_and_length_factor":  {"start": 0.0,"stop": 2**31-1,"domain": "continuous"},
                         "average_edge_duration_factor": {"start": 0.0,"stop": 2**31-1,"domain": "continuous"}, 
@@ -20,4 +21,5 @@ def adaptation_options_endpoint():
                         "freshness_cut_off_value":      {"start": 1.0,"stop": 2**31-1,"domain": "continuous"},
                         "re_route_every_ticks":         {"start": 1,"stop": 2**31-1,"domain": "discrete"}, 
                         "total_car_counter":            {"start": 10,"stop": 2**31-1,"domain": "discrete"}, 
-                        "edge_average_influence":       {"start": 0.0,"stop": 1.0,"domain": "continuous"}}}
+                        "edge_average_influence":       {"start": 0.0,"stop": 1.0,"domain": "continuous"}
+                        }
