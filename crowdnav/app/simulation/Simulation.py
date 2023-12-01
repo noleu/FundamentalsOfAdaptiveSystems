@@ -135,6 +135,8 @@ class Simulation(object):
                             RoutingEdge.edgeAverageInfluence = newConf["edge_average_influence"]
                             print("setting edgeAverageInfluence: " + str(newConf["edge_average_influence"]))
 
+                        
+
             # print status update if we are not running in parallel mode
             if (cls.tick % 100) == 0 and Config.parallelMode is False:
                 print(str(Config.processID) + " -> Step:" + str(cls.tick) + " # Driving cars: " + str(
@@ -142,35 +144,12 @@ class Simulation(object):
                     CarRegistry.totalCarCounter) + " # avgTripDuration: " + str(
                     CarRegistry.totalTripAverage) + "(" + str(
                     CarRegistry.totalTrips) + ")" + " # avgTripOverhead: " + str(
-                    CarRegistry.totalTripOverheadAverage))
+                    CarRegistry.totalTripOverheadAverage) + " # totalComplaints: " + str(
+                    CarRegistry.totalComplaints))
+                
+            cls.sendMonitorInfo(duration, routingDuration)
                 
             # publish to kafkaTopicMonitoring after every tick/simulation step
-            monitorTrip = {
-                "step": cls.tick,
-                "tickDuration": duration,
-                "routingDuration": routingDuration,
-                "drivingCarCounter": traci.vehicle.getIDCount(),
-                "totalTripAverage": CarRegistry.totalTripAverage,
-                "totalTrips": CarRegistry.totalTrips,
-                "totalTripOverheadAverage": CarRegistry.totalTripOverheadAverage
-            }
-            monitorConfigs = {
-                "explorationPercentage":CustomRouter.explorationPercentage,
-                "routeRandomSigma": CustomRouter.routeRandomSigma,
-                "maxSpeedAndLengthFactor": CustomRouter.maxSpeedAndLengthFactor,
-                "averageEdgeDurationFactor": CustomRouter.averageEdgeDurationFactor,
-                "freshnessUpdateFactor": CustomRouter.freshnessUpdateFactor,
-                "freshnessCutOffValue": CustomRouter.freshnessCutOffValue,
-                "reRouteEveryTicks": CustomRouter.reRouteEveryTicks,
-                "totalCarCounter": CarRegistry.totalCarCounter,
-                "edgeAverageInfluence": RoutingEdge.edgeAverageInfluence
-            }
-            simulationDetails = {
-                "carStats": monitorTrip,
-                "configs": monitorConfigs
-            } 
-            KafkaProducerMonitor.publish(Config.kafkaTopicMonitoring, simulationDetails)
-
                 # @depricated -> will be removed
                 # # if we are in paralllel mode we end the simulation after 10000 ticks with a result output
                 # if (cls.tick % 10000) == 0 and Config.parallelMode:
@@ -182,3 +161,35 @@ class Simulation(object):
                 #         CarRegistry.totalTrips) + ")" + " # avgTripOverhead: " + str(
                 #         CarRegistry.totalTripOverheadAverage))
                 #     return
+
+    # publish to kafkaTopicMonitoring after every tick/simulation step   
+    @classmethod   
+    def sendMonitorInfo(cls, duration, routingDuration):              
+        monitorTrip = {
+            "step": cls.tick,
+            "tick_duration": duration,
+            "routing_duration": routingDuration,
+            "driving_car_counter": traci.vehicle.getIDCount(),
+            "total_trip_average": CarRegistry.totalTripAverage,
+            "total_trips": CarRegistry.totalTrips,
+            "total_trip_overhead_average": CarRegistry.totalTripOverheadAverage,
+            "total_complaints": CarRegistry.totalComplaints
+        }
+        monitorConfigs = {
+            "exploration_percentage": CustomRouter.explorationPercentage,
+            "route_random_sigma": CustomRouter.routeRandomSigma,
+            "max_speed_and_length_factor": CustomRouter.maxSpeedAndLengthFactor,
+            "average_edge_duration_factor": CustomRouter.averageEdgeDurationFactor,
+            "freshness_update_factor": CustomRouter.freshnessUpdateFactor,
+            "freshness_cut_off_value": CustomRouter.freshnessCutOffValue,
+            "re_route_every_ticks": CustomRouter.reRouteEveryTicks,
+            "total_car_counter": CarRegistry.totalCarCounter,
+            "edge_average_influence": RoutingEdge.edgeAverageInfluence
+        }
+        simulationDetails = {
+            "car_stats": monitorTrip,
+            "configs": monitorConfigs
+        } 
+        KafkaProducerMonitor.publish(Config.kafkaTopicMonitoring, simulationDetails)
+
+    

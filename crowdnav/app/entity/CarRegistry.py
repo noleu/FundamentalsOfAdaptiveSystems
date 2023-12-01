@@ -27,6 +27,8 @@ class CarRegistry(object):
     totalTripAverage = 0
     # average of all trip overheads (overhead is TotalTicks/PredictedTicks)
     totalTripOverheadAverage = 0
+    # total number of complaints
+    totalComplaints = 0
 
     # @todo on shortest path possible -> minimal value
 

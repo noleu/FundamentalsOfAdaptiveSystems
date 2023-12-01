@@ -15,7 +15,6 @@ mqttPort = "1883"
 kafkaTopicTrips = "crowd-nav-trips"
 kafkaTopicPerformance = "crowd-nav-performance"
 kafkaTopicRouting = "crowd-nav-routing"
-
 kafkaTopicMonitoring = "crowd-nav-monitored-stats"
 
 # where we receive system changes
