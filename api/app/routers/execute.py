@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from aiokafka import AIOKafkaProducer
-from kafka.errors import KafkaTimeoutError, KafkaError
+from kafka.errors import KafkaTimeoutError, KafkaError, KafkaConnectionError
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -29,10 +29,10 @@ class AdaptationOptions(BaseModel):
     # Knobs: Knobs
     route_random_sigma: float | None = None
     exploration_percentage: float | None = None
-    max_speed_and_length_factor: int | None = None
-    average_edge_duration_factor: int | None = None
-    freshness_update_factor: int | None = None
-    freshness_cut_off_value: int | None = None
+    max_speed_and_length_factor: float | None = None
+    average_edge_duration_factor: float | None = None
+    freshness_update_factor: float | None = None
+    freshness_cut_off_value: float | None = None
     re_route_every_ticks: int | None = None
     total_car_counter: int | None = None
     edge_average_influence: float | None = None
@@ -55,6 +55,9 @@ async def execute(options: AdaptationOptions):
         # response = await future
         status = "success"
         message = "The message was successfully sent to the kafka broker, the message is: " + str(options)
+    except KafkaConnectionError:
+        logging.error("KafkaConnectionError: " + str(KafkaConnectionError))
+        message = "Something went wrong with the connection to Kafka"
     except KafkaTimeoutError:
         logging.error("KafkaTimeoutError: " + str(KafkaTimeoutError))
         message = "While sending the message to the kafka broker a timeout occurred"
