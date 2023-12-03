@@ -15,18 +15,8 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},)
 
 
-class Knobs(BaseModel):
-    routeRandomSigma: float
-    explorationPercentage: float
-    maxSpeedAndLengthFactor: int
-    averageEdgeDurationFactor: int
-    freshnessUpdateFactor: int
-    freshnessCutOffValue: int
-    reRouteEveryTicks: int
-
-
 class AdaptationOptions(BaseModel):
-    # Knobs: Knobs
+
     route_random_sigma: float | None = None
     exploration_percentage: float | None = None
     max_speed_and_length_factor: int | None = None

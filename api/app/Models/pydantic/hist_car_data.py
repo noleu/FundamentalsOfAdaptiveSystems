@@ -12,14 +12,3 @@ class HistCarData(BaseModel):
 
     class Config:
         orm_mode = True
-        # schema_extra = {
-        #     "example": {
-        #         "step": 0,
-        #         "total_trips": 0,
-        #         "tick_duration": 0,
-        #         "routing_duration": 0,
-        #         "total_trip_overhead_average": 0.0,
-        #         "total_trip_average": 0.0,
-        #         "driving_car_counter": 0
-        #     }
-        # }
