@@ -20,22 +20,23 @@ services:
     volumes:
       - csvexchangevolume:/app/data/
 
-  http-server:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    depends_on:
-      - kafka
-    networks:
-      - foas-net
-    volumes:
-      - csvexchangevolume:/code/app/data
-    #      - ./api:/code
-    ports:
-      - '8080:80'
+    # http-server:
+    #   build:
+    #     context: ./api
+    #     dockerfile: Dockerfile
+    #   depends_on:
+    #     - kafka
+    #   networks:
+    #     - foas-net
+    #   volumes:
+    #     - csvexchangevolume:/code/app/data
+    #       - ./api:/code
+    # ports:
+    #   - '8080:8080'
 
 networks:
   foas-net:
+    name: foas-net
     driver: bridge
 
 volumes:
