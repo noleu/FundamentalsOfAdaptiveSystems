@@ -1,13 +1,12 @@
 from fastapi import FastAPI
 from .routers import adaptation_options, adaptation_options_schema, execute_schema, monitor_schema, monitor, execute
 from .connectors import KafkaConsumerMonitor
-from threading import Thread
 from contextlib import asynccontextmanager
+import asyncio
 
 @asynccontextmanager
 async def startup(app: FastAPI):
-    consumerThread = Thread(target=KafkaConsumerMonitor.connect)
-    consumerThread.start()
+    asyncio.create_task(KafkaConsumerMonitor.connect())
     yield
 
 app = FastAPI(lifespan=startup)
