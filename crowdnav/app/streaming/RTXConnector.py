@@ -60,8 +60,6 @@ def checkForNewConfiguration():
             latest_config = None
             for msg in consumer:
                 latest_config = msg.value
-            # not sure if correct type, prob needs to be dict
-            print("latest_config " + str(latest_config) + str(type(latest_config)))
             return latest_config
         except Exception as e:
             print("c " + str(consumer is None))
