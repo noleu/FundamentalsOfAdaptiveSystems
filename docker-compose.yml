@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   kafka:
+    container_name: kafka
     image: spotify/kafka
     environment:
       - ADVERTISED_HOST=kafka
@@ -20,19 +21,19 @@ services:
     volumes:
       - csvexchangevolume:/app/data/
 
-    # http-server:
-    #   build:
-    #     context: ./api
-    #     dockerfile: Dockerfile
-    #   depends_on:
-    #     - kafka
-    #   networks:
-    #     - foas-net
-    #   volumes:
-    #     - csvexchangevolume:/code/app/data
-    #       - ./api:/code
-    # ports:
-    #   - '8080:8080'
+  # http-server:
+  #   container_name: http-server
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - kafka
+  #   networks:
+  #     - foas-net
+  #   volumes:
+  #     - csvexchangevolume:/code/app/data
+  #   ports:
+  #     - '8080:8080'
 
 networks:
   foas-net:

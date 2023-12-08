@@ -6,6 +6,7 @@ import asyncio
 
 @asynccontextmanager
 async def startup(app: FastAPI):
+    await asyncio.sleep(5)
     asyncio.create_task(KafkaConsumerMonitor.connect())
     yield
 
