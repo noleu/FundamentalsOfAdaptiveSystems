@@ -7,6 +7,8 @@
 
 ### This branch was used to train the nsga2 found settings via the repo below
 
+https://github.com/JeremyGDiamond/FasCrowdNavNsga
+
 CrowdNav is a simulation based on SUMO and TraCI that implements a custom router
 that can be configured using kafka messages or local JSON config on the fly while the simulation is running.
 Also runtime data is send to a kafka queue to allow stream processing and logger locally to CSV.
