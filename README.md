@@ -16,7 +16,7 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
 * Run `docker compose up -d`  to run all the images (CrowdNav, Kafka, API) in detached mode
 
 ## UPISAS setup
-* Run `docker compose -f docker-compose-upisas.yml up -d`  to run all the images (CrowdNav, Kafka) in detached mode
+* Run `docker compose -f docker-compose.upisas.yml up -d`  to run all the images (CrowdNav, Kafka) in detached mode
 * Run `docker build -f api/Dockerfile.upisas -t http-server-group-6_4 ./api` to build the API image
 
 ## Folder structure
