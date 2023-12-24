@@ -9,4 +9,4 @@ router = APIRouter(
 
 @router.get("/")
 def monitor_endpoint():
-    return { "message": KafkaConsumerMonitor.data_store["latest_message"]}
+    return KafkaConsumerMonitor.data_store["latest_message"]

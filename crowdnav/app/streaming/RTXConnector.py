@@ -58,12 +58,8 @@ def checkForNewConfiguration():
             # @todo get last value
             # print("config update check" + next(consumer).value) # fails
             latest_config = None
-            print("consumer " + str(consumer is None))
             for msg in consumer:
-                print("msg " + str(msg))
                 latest_config = msg.value
-            # not sure if correct type, prob needs to be dict
-            print("latest_config " + str(latest_config) + str(type(latest_config)))
             return latest_config
         except Exception as e:
             print("c " + str(consumer is None))

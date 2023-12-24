@@ -12,9 +12,12 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
 * Docker
 * Docker Compose
 
-## Setup
-* Download the CrowdNav code
+## Regular setup
 * Run `docker compose up -d`  to run all the images (CrowdNav, Kafka, API) in detached mode
+
+## UPISAS setup
+* Run `docker compose -f docker-compose.upisas.yml up -d`  to run all the images (CrowdNav, Kafka) in detached mode
+* Run `docker build -f api/Dockerfile.upisas -t http-server-group-6_4 ./api` to build the API image
 
 ## Folder structure
 * **api**: This contains the HTTP Server which is implemented using FastAPI
@@ -32,7 +35,9 @@ Also runtime data is send to a kafka queue to allow stream processing and logger
   * /adaptation_options_schema (GET): Returns the JSON schema of the JSON object returned by the “adaptation_options” endpoint.
 
 ### Testing endpoints
-All the endpoints can be tested using an HTTP client like Postman. For all the GET requests just go to the URL specified in the API docs (e.g. http://localhost:8080/adaptation_options). For the /execute you first have to get a JSON object using a GET request to /adaptation_options and use this object in the body of the PUT request.
+Two options to test:
+1. UPISAS
+2. All the endpoints can be tested using an HTTP client like Postman. For all the GET requests just go to the URL specified in the API docs (e.g. http://localhost:8080/adaptation_options). For the /execute you first have to get a JSON object using a GET request to /adaptation_options and use this object in the body of the PUT request.
 
 ### Notes
 
